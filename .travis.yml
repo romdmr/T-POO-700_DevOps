@@ -1,12 +1,31 @@
+language: elixir
+
+# Versions d'Elixir et d'Erlang (OTP) à utiliser
+elixir:
+  - '1.14.2'  # Remplace par la version que tu utilises
+otp_release:
+  - '26.0'  # Remplace par la version d'Erlang que tu utilises
+
+# Environnement PostgreSQL
 services:
   - postgresql
+
+# Définir la version de PostgreSQL
+addons:
+  postgresql: "12"
+
+# Commande pour configurer la base de données PostgreSQL
 before_script:
-  - mix ecto.create
-  - mix ecto.migrate
+  - mix deps.get  # Installe les dépendances Elixir/Phoenix
+  - mix ecto.create  # Crée la base de données
+  - mix ecto.migrate  # Exécute les migrations de la base de données
+
+# Commande pour lancer les tests
 script:
   - mix test
-deploy:
-  provider: script
-  script: bash deploy.sh
-  on:
-    branch: main
+
+# Cache des dépendances pour accélérer les builds futurs
+cache:
+  directories:
+    - _build
+    - deps
