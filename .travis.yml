@@ -2,9 +2,9 @@ language: elixir
 
 # Versions d'Elixir et d'Erlang (OTP) à utiliser
 elixir:
-  - '1.14.2'  # Remplace par la version que tu utilises
+  - '1.17.3'  # Remplace par la version que tu utilises
 otp_release:
-  - '26.0'  # Remplace par la version d'Erlang que tu utilises
+  - '27.1.1'  # Remplace par la version d'Erlang que tu utilises
 
 # Environnement PostgreSQL
 services:
@@ -12,7 +12,7 @@ services:
 
 # Définir la version de PostgreSQL
 addons:
-  postgresql: "12"
+  postgresql: "17"
 
 # Commande pour configurer la base de données PostgreSQL
 before_script:
