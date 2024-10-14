@@ -1,0 +1,35 @@
+name: Elixir CI Workflow
+
+# Déclenchement du workflow sur chaque push et pull request
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+# Jobs à exécuter dans le workflow
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Vérifie le dépôt GitHub
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Configuration de la version d'Elixir et d'Erlang/OTP
+      - name: Set up Elixir
+        uses: actions/setup-elixir@v1
+        with:
+          elixir-version: '1.17.3'
+          otp-version: '27.1.1'
+
+      # Installation des dépendances du projet
+      - name: Install dependencies
+        run: mix deps.get
+
+      # Exécution des tests
+      - name: Run tests
+        run: mix test
