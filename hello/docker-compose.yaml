@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  phoenix:
+    build: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+
+  db:
+    image: postgres
+    ports:
+    - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql
+    env_file:
+      - .env
+
+volumes:
+  db_data:
