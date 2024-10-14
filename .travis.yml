@@ -1,0 +1,12 @@
+services:
+  - postgresql
+before_script:
+  - mix ecto.create
+  - mix ecto.migrate
+script:
+  - mix test
+deploy:
+  provider: script
+  script: bash deploy.sh
+  on:
+    branch: main
