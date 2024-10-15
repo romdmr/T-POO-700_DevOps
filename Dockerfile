@@ -34,4 +34,4 @@ RUN mix --version && node --version && npm --version
 
 EXPOSE 4000
 
-ENTRYPOINT ["./entrypoint.sh"]
+ENTRYPOINT ["entrypoint.sh"]
