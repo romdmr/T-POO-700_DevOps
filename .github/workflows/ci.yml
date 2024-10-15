@@ -1,6 +1,7 @@
-name: Elixir CI Workflow
+# .github/workflows/ci.yml
 
-# Déclenchement du workflow sur chaque push et pull request
+name: Elixir CI
+
 on:
   push:
     branches:
@@ -9,27 +10,48 @@ on:
     branches:
       - main
 
-# Jobs à exécuter dans le workflow
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
-      # Vérifie le dépôt GitHub
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: my_app_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-      # Configuration de la version d'Elixir et d'Erlang/OTP
+    steps:
+      - uses: actions/checkout@v3
+
       - name: Set up Elixir
-        uses: actions/setup-elixir@v2
+        uses: erlef/setup-beam@v1
         with:
           elixir-version: '1.17.3'
-          otp-version: '27.1.1'
+          otp-version: '26.0'
 
-      # Installation des dépendances du projet
       - name: Install dependencies
         run: mix deps.get
 
-      # Exécution des tests
+      - name: Compile the project
+        run: mix compile
+
+      - name: Set up the database
+        env:
+          MIX_ENV: test
+        run: |
+          mix ecto.create
+          mix ecto.migrate
+
       - name: Run tests
+        env:
+          MIX_ENV: test
         run: mix test
