@@ -21,7 +21,7 @@ jobs:
 
       # Configuration de la version d'Elixir et d'Erlang/OTP
       - name: Set up Elixir
-        uses: actions/setup-elixir@v1
+        uses: actions/setup-elixir@v2
         with:
           elixir-version: '1.17.3'
           otp-version: '27.1.1'
